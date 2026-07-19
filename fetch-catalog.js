@@ -4,7 +4,7 @@ const path = require('path');
 
 const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
   ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-  : require('~/Downloads/aada-clothing-firebase-adminsdk-fbsvc-a6dfe44895.json');
+  : require('../aada-clothing-firebase-adminsdk-fbsvc-a6dfe44895.json');
 
 if (!admin.apps.length) {
   admin.initializeApp({
