@@ -1,0 +1,127 @@
+/* Navbar.css */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #F3E8DC; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo img {
+  height: 40px; /* Increase this to make room for the text */
+  width: auto;
+  object-fit: fill; /* Ensures the image fills the container without distortion */
+  
+  /* This is the magic line that removes the background without ruining the text */
+  /* IMPORTANT: Remove any 'transform: scale()' if you added it earlier */
+  transform: scale(2.2); 
+  transform-origin: left center;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #000;
+  cursor: pointer;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent; 
+  transition: border-color 0.2s ease;
+  
+  /* Add this line to remove the default black underline */
+  text-decoration: none; 
+}
+
+.nav-item.active {
+  border-bottom: 2px solid #7C2027; 
+}
+
+.nav-item:hover {
+  color: #7C2027; 
+}
+
+/* --- New Dropdown Styles --- */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.country-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-selected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.dropdown-selected:hover {
+  background-color: #ebe7e0; /* Slight highlight on hover */
+}
+
+/* This makes the flag a perfect circle */
+.flag-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: fill; /* <-- This forces the whole flag to squeeze into the circle */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 10px;
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  width: 120px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f7f7f7;
+}
+
+.nav-link {
+    color: #5a2e2a; /* Adjust this hex code to match your exact logo red/brown */
+    font-weight: 500; /* Try 400, 500, or 600 instead of bold/700 */
+    text-transform: uppercase;
+}
+
+.nav-link.active {
+    border-bottom: 2px solid #5a2e2a; /* Match color to text */
+    padding-bottom: 4px; /* Adjusts how far the line is from the text */
+}

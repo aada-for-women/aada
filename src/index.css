@@ -1,13 +1,24 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* index.css */
+html{
+  scroll-behavior: smooth;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* Ensures the body can grow as tall as it needs to */
+  min-height: 100vh; 
+  /* Forces the browser to show a vertical scrollbar if content overflows */
+  overflow-y: auto;  
+  /* Removes any horizontal scrolling caused by margins */
+  overflow-x: auto; 
+  background-color: #F7F4EF; 
+}
+
+#root {
+  /* Ensures the React root wrapper also expands properly */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
