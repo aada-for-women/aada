@@ -3,10 +3,12 @@
 .navbar {
   display: flex;
   justify-content: space-between;
+  position: sticky;
   align-items: center;
   padding: 20px 50px;
   background-color: #F3E8DC; 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 1000;
 }
 
 .navbar-logo {
