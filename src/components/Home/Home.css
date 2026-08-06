@@ -1,0 +1,111 @@
+.home-container {
+  display: flex;
+  align-items: center; /* Vertically centers the left text block */
+  justify-content: center;
+  
+  /* Top, Left, and Right padding only — 0 on the bottom so the image hits the bottom edge */
+  padding: 50px 8% 0 10%; 
+  
+  /* Background Styling */
+  background-image: url('../../../public/image.png'); /* Or your textured background file */
+  background-size: cover;
+  background-position: center;
+  background-color: #F7F4EF; 
+  
+  min-height: 80vh; /* Increased slightly to give the zoomed model breathing room */
+  position: relative;
+  overflow: hidden; /* Prevents scrollbars if the zoomed image overflows slightly */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.home-text-section {
+  flex: 1;
+  padding-right: 40px;
+  padding-bottom: 50px; /* Restores bottom spacing just for the text side */
+  z-index: 2; /* Keeps text above the image layer */
+}
+
+.home-title {
+  font-size: 4.5rem;
+  font-weight: 400;
+  color: #333;
+  line-height: 1.35;
+  margin-bottom: 25px;
+}
+
+.aada-leaf {
+  color: #7C2027;
+}
+
+.aada-leaf-img {
+  display: inline-block;
+  width: 0.8em;          /* Sizes the image relative to your h1 font size */
+  height: auto;
+  vertical-align: middle; /* Aligns the center of the leaf with the middle of the text */
+  margin-left: 5px;       /* Slight spacing from the text */
+  margin-bottom: 8px;     /* Fine-tunes vertical position so it sits right */
+}
+
+.home-shop-btn {
+  display: inline-block;
+  background-color: #7C2027; 
+  color: #fff;
+  padding: 15px 32px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.home-shop-btn:hover {
+  background-color: #5c161c;
+}
+
+/* --- THE FIX: Align Right & Bottom, Increase Zoom --- */
+/* 1. Give the right section more width so a larger image fits */
+.home-image-section {
+  flex: 1.2; /* Increased from 1 or 1.2 to allow more room for zoom */
+  display: flex;
+  justify-content: flex-end; /* Keeps her aligned to the right edge */
+  align-items: flex-end;     /* Keeps her anchored to the bottom */
+  align-self: flex-end;
+  height: 100%;
+}
+
+/* 2. Increase max-width and scale up the model */
+.home-hero-image {
+  width: 100%;
+  max-width: 850px; /* BUMPED UP from 680px for a much larger presence */
+  height: auto;
+  object-fit: contain;
+  object-position: bottom right; /* Keeps her feet/base flush at the bottom right */
+  display: block;
+}
+
+/* Responsive adjustment for mobile screens */
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 5% 0 5%;
+    min-height: auto;
+  }
+  
+  .home-text-section {
+    padding-right: 0;
+    padding-bottom: 30px;
+  }
+  
+  .home-image-section {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .home-hero-image {
+    max-width: 450px;
+    object-position: bottom center;
+  }
+}
