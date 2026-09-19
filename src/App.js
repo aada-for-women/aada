@@ -1,54 +1,82 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Navbar from "./components/Navbar/Navbar";
-import AdminUI from "./components/AdminUI/AdminUI";
-import Home from "./components/Home/Home";
-import Shop from "./components/Shop/Shop";
-import About from "./components/About/About";
-import Contact from "./components/Contact/Contact";
+import Navbar from './components/Navbar/Navbar';
+import AdminUI from './components/AdminUI/AdminUI';
+import Home from './components/Home/Home';
+import Shop from './components/Shop/Shop';
+import Contact from './components/Contact/Contact';
+
+const DEFAULT_CURRENCY = 'INR';
+const SUPPORTED_CURRENCIES = ['INR', 'AED'];
+
+const countryToCurrency = {
+  IN: 'INR',
+  AE: 'AED',
+};
 
 export default function App() {
-    return (
-        <Router>
-            <Routes>
-                
-                {/* PUBLIC ROUTE: The Single Scrolling Page */}
-                <Route 
-                    path="/" 
-                    element={
-                        <div style={{ backgroundColor: "#F7F4EF", minHeight: "100vh" }}>
-                            
-                            {/* Make the Navbar sticky so it stays at the top while scrolling */}
-                            <div style={{ position: "sticky", top: 0, zIndex: 1000 }}>
-                                <Navbar />
-                            </div>
-                            
-                            {/* Stack the sections and give them IDs that match your Navbar anchor links */}
-                            <section id="home">
-                                <Home />
-                            </section>
+  const [currency, setCurrency] = useState(DEFAULT_CURRENCY);
 
-                            <section id="shop">
-                                <Shop />
-                            </section>
+  useEffect(() => {
+    const cachedCurrency = sessionStorage.getItem('user_currency');
 
-                            <section id="about">
-                                <About />
-                            </section>
+    if (cachedCurrency && SUPPORTED_CURRENCIES.includes(cachedCurrency)) {
+      setCurrency(cachedCurrency);
+      return;
+    }
 
-                            <section id="contact">
-                                <Contact />
-                            </section>
-                            
-                        </div>
-                    } 
-                />
+    const detectUserCurrency = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
 
-                {/* ADMIN ROUTE: Completely separate and hidden */}
-                <Route path="/admin" element={<AdminUI />} />
-                
-            </Routes>
-        </Router>
-    );
+        const detectedCurrency =
+          countryToCurrency[data.country_code] || DEFAULT_CURRENCY;
+
+        sessionStorage.setItem('user_currency', detectedCurrency);
+        setCurrency(detectedCurrency);
+      } catch (error) {
+        console.error('GeoIP detection failed, falling back to default:', error);
+        setCurrency(DEFAULT_CURRENCY);
+      }
+    };
+
+    detectUserCurrency();
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem('user_currency', currency);
+  }, [currency]);
+
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div style={{ backgroundColor: '#F7F4EF', minHeight: '100vh' }}>
+              <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
+                <Navbar currency={currency} onCurrencyChange={setCurrency} />
+              </div>
+
+              <section id="home">
+                <Home />
+              </section>
+
+              <section id="shop">
+                <Shop currency={currency} />
+              </section>
+
+              <section id="contact">
+                <Contact />
+              </section>
+            </div>
+          }
+        />
+
+        <Route path="/admin" element={<AdminUI />} />
+      </Routes>
+    </Router>
+  );
 }
