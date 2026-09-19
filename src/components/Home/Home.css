@@ -1,111 +1,165 @@
+
 .home-container {
   display: flex;
-  align-items: center; /* Vertically centers the left text block */
+  align-items: center;
   justify-content: center;
-  
-  /* Top, Left, and Right padding only — 0 on the bottom so the image hits the bottom edge */
-  padding: 50px 8% 0 10%; 
-  
-  /* Background Styling */
-  background-image: url('../../../public/image.png'); /* Or your textured background file */
-  background-size: cover;
-  background-position: center;
-  background-color: #F7F4EF; 
-  
-  min-height: 80vh; /* Increased slightly to give the zoomed model breathing room */
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding: 50px 8% 0 10%;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1)),
+    url('../../../public/image.png') center/cover no-repeat,
+    #f7f4ef;
+  min-height: 80vh;
   position: relative;
-  overflow: hidden; /* Prevents scrollbars if the zoomed image overflows slightly */
+  overflow: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  isolation: isolate;
+}
+
+.home-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(124, 32, 39, 0.08), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(124, 32, 39, 0.12), transparent 30%);
+  z-index: 0;
+}
+
+.home-text-section,
+.home-image-section {
+  position: relative;
+  z-index: 1;
 }
 
 .home-text-section {
   flex: 1;
   padding-right: 40px;
-  padding-bottom: 50px; /* Restores bottom spacing just for the text side */
-  z-index: 2; /* Keeps text above the image layer */
+  padding-bottom: 50px;
 }
 
 .home-title {
-  font-size: 4.5rem;
+  font-size: clamp(2.7rem, 5vw, 5rem);
   font-weight: 400;
-  color: #333;
-  line-height: 1.35;
+  color: #2f2a27;
+  line-height: 1.08;
+  letter-spacing: -0.06em;
   margin-bottom: 25px;
 }
 
 .aada-leaf {
-  color: #7C2027;
+  color: #7c2027;
 }
 
 .aada-leaf-img {
   display: inline-block;
-  width: 0.8em;          /* Sizes the image relative to your h1 font size */
+  width: 0.8em;
   height: auto;
-  vertical-align: middle; /* Aligns the center of the leaf with the middle of the text */
-  margin-left: 5px;       /* Slight spacing from the text */
-  margin-bottom: 8px;     /* Fine-tunes vertical position so it sits right */
+  vertical-align: middle;
+  margin-left: 0.2em;
+  margin-bottom: 0.12em;
+  filter: drop-shadow(0 8px 18px rgba(124, 32, 39, 0.18));
 }
 
 .home-shop-btn {
-  display: inline-block;
-  background-color: #7C2027; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7c2027, #932c34);
   color: #fff;
   padding: 15px 32px;
   font-size: 14px;
   letter-spacing: 1.5px;
   text-decoration: none;
   border: none;
+  border-radius: 999px;
   cursor: pointer;
   margin-top: 10px;
-  transition: background-color 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 12px 24px rgba(124, 32, 39, 0.18);
 }
 
 .home-shop-btn:hover {
-  background-color: #5c161c;
+  background: linear-gradient(135deg, #5c161c, #7c2027);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(124, 32, 39, 0.22);
 }
 
-/* --- THE FIX: Align Right & Bottom, Increase Zoom --- */
-/* 1. Give the right section more width so a larger image fits */
 .home-image-section {
-  flex: 1.2; /* Increased from 1 or 1.2 to allow more room for zoom */
+  flex: 1.2;
   display: flex;
-  justify-content: flex-end; /* Keeps her aligned to the right edge */
-  align-items: flex-end;     /* Keeps her anchored to the bottom */
+  justify-content: flex-end;
+  align-items: flex-end;
   align-self: flex-end;
   height: 100%;
 }
 
-/* 2. Increase max-width and scale up the model */
 .home-hero-image {
   width: 100%;
-  max-width: 850px; /* BUMPED UP from 680px for a much larger presence */
+  max-width: 850px;
   height: auto;
   object-fit: contain;
-  object-position: bottom right; /* Keeps her feet/base flush at the bottom right */
+  object-position: bottom right;
   display: block;
+  filter: drop-shadow(0 28px 48px rgba(59, 41, 35, 0.18));
+  transform: scale(1.04);
 }
 
-/* Responsive adjustment for mobile screens */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .home-container {
     flex-direction: column;
     text-align: center;
     padding: 40px 5% 0 5%;
     min-height: auto;
+    gap: 1rem;
   }
-  
+
   .home-text-section {
     padding-right: 0;
     padding-bottom: 30px;
   }
-  
+
   .home-image-section {
     justify-content: center;
     width: 100%;
+    align-self: center;
   }
 
   .home-hero-image {
-    max-width: 450px;
+    max-width: 560px;
     object-position: bottom center;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding-top: 30px;
+  }
+
+  .home-title {
+    line-height: 1.1;
+  }
+
+  .home-shop-btn {
+    width: 100%;
+    max-width: 260px;
+    padding: 14px 20px;
+    font-size: 12px;
+    letter-spacing: 1.1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .home-title {
+    font-size: clamp(2.2rem, 11vw, 3rem);
+  }
+
+  .home-hero-image {
+    max-width: 380px;
   }
 }
