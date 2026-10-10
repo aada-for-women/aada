@@ -1,24 +1,31 @@
 /* index.css */
-html{
+html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  /* Ensures the body can grow as tall as it needs to */
-  min-height: 100vh; 
-  /* Forces the browser to show a vertical scrollbar if content overflows */
+  min-height: 100vh;
+  min-height: 100dvh;
   overflow-y: auto;  
-  /* Removes any horizontal scrolling caused by margins */
-  overflow-x: auto; 
+  overflow-x: hidden; /* Prevents horizontal scroll wobbling on mobile devices */
   background-color: #F7F4EF; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  /* Ensures the React root wrapper also expands properly */
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Ensure anchor scrolling accounts for sticky navbar height on mobile & desktop */
+section[id] {
+  scroll-margin-top: 75px;
 }
