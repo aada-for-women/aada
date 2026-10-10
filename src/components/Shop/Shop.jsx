@@ -21,6 +21,14 @@ export default function Shop({ currency }) {
   const [selectedGender, setSelectedGender] = useState('Women');
   const [search, setSearch] = useState('');
   const [modalItems, setModalItems] = useState(null);
+  const [expandedSubcategories, setExpandedSubcategories] = useState({});
+
+  const toggleExpandSubcategory = (key) => {
+    setExpandedSubcategories((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
 
   const products = useMemo(
     () => (Array.isArray(catalog?.products) ? catalog.products : []),
@@ -76,6 +84,16 @@ export default function Shop({ currency }) {
           placeholder="Find products..."
           aria-label="Search products"
         />
+        {search && (
+          <button
+            type="button"
+            className="search-clear-btn"
+            onClick={() => setSearch("")}
+            aria-label="Clear search"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       <div className="shop-tabs" role="tablist" aria-label="Product categories">
@@ -104,25 +122,58 @@ export default function Shop({ currency }) {
             return (
               <div key={category} className="category-block">
                 {Object.entries(categoryGroups).map(([subcategory, items]) => {
-                  const visibleItems = items.slice(0, 3);
+                  const subcategoryKey = `${category}-${subcategory}`;
+                  const isExpanded = !!expandedSubcategories[subcategoryKey];
+                  const visibleItems = isExpanded ? items : items.slice(0, 3);
 
                   return (
                     <div key={subcategory} className="subcategory-block">
                       <div className="subcategory-header">
-                        <h3 className="subcategory-title">{subcategory}</h3>
+                        <div className="subcategory-title-wrap">
+                          <h3 className="subcategory-title">{subcategory}</h3>
+                          <span className="subcategory-count-pill">
+                            {items.length} {items.length === 1 ? 'Design' : 'Designs'}
+                          </span>
+                        </div>
+
+                        {items.length > 3 && (
+                          <div className="subcategory-quick-actions">
+                            <button
+                              type="button"
+                              className="btn-quick-toggle"
+                              onClick={() => toggleExpandSubcategory(subcategoryKey)}
+                              aria-label={isExpanded ? `Collapse ${subcategory}` : `Expand all ${items.length} ${subcategory}`}
+                            >
+                              {isExpanded ? '▴ Show Top 3' : `▾ View All (${items.length})`}
+                            </button>
+                            <button
+                              type="button"
+                              className="btn-quick-modal"
+                              onClick={() => openModal(items, subcategory)}
+                              aria-label={`Open full ${subcategory} gallery modal`}
+                            >
+                              ⤢ Studio
+                            </button>
+                          </div>
+                        )}
                       </div>
 
                       <div className="product-grid">
-                        {visibleItems.map((product) => {
+                        {visibleItems.map((product, idx) => {
                           const productPrice = getProductPrice(product, currency);
+                          const isNewlyRevealed = isExpanded && idx >= 3;
 
                           return (
-                            <article key={product.id} className="product-card">
+                            <article
+                              key={product.id}
+                              className={`product-card ${isNewlyRevealed ? 'revealed-card' : ''}`}
+                            >
                               <div className="product-image-wrap">
                                 <img
                                   src={product.image}
                                   alt={product.name}
                                   className="product-image"
+                                  loading="lazy"
                                 />
 
                                 <div className="product-hover-overlay">
@@ -137,19 +188,20 @@ export default function Shop({ currency }) {
                             </article>
                           );
                         })}
+                      </div>
 
-                        {items.length > 3 && (
+                      {/* Collapse bar at bottom when expanded */}
+                      {isExpanded && items.length > 3 && (
+                        <div className="subcategory-collapse-bar">
                           <button
                             type="button"
-                            className="view-more-btn overlay"
-                            onClick={() => openModal(items, subcategory)}
-                            aria-label={`View more ${subcategory}`}
+                            className="btn-collapse-sub"
+                            onClick={() => toggleExpandSubcategory(subcategoryKey)}
                           >
-                            <span className="view-more-text">View More</span>
-                            <span className="view-more-arrow" aria-hidden="true">→</span>
+                            ▴ Collapse back to top 3 {subcategory}
                           </button>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -164,7 +216,12 @@ export default function Shop({ currency }) {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>{modalItems.title}</h3>
-              <button type="button" className="modal-close" onClick={closeModal}>
+              <button
+                type="button"
+                className="modal-close"
+                onClick={closeModal}
+                aria-label="Close modal"
+              >
                 ×
               </button>
             </div>
@@ -180,6 +237,7 @@ export default function Shop({ currency }) {
                         src={product.image}
                         alt={product.name}
                         className="modal-image"
+                        loading="lazy"
                       />
                     </div>
 

@@ -151,15 +151,26 @@
 
 @media (max-width: 480px) {
   .home-container {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+    padding-bottom: 20px;
   }
 
   .home-title {
-    font-size: clamp(2.2rem, 11vw, 3rem);
+    font-size: clamp(2.2rem, 10.5vw, 3rem);
+    line-height: 1.12;
+    text-wrap: balance;
   }
 
   .home-hero-image {
-    max-width: 380px;
+    max-width: min(100%, 360px);
+    width: 100%;
+    transform: none;
+  }
+
+  .home-shop-btn {
+    min-height: 48px;
+    font-size: 13px;
+    letter-spacing: 1.2px;
   }
 }

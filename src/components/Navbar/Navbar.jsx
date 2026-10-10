@@ -15,10 +15,12 @@ const currencyToCountry = {
 export default function Navbar({ currency, onCurrencyChange }) {
   const [activeLink, setActiveLink] = useState("HOME");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(
     currencyToCountry[currency] || "IN"
   );
   const dropdownRef = useRef(null);
+  const navContainerRef = useRef(null);
 
   const navItems = [
     { name: "HOME", id: "#home" },
@@ -41,10 +43,17 @@ export default function Navbar({ currency, onCurrencyChange }) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
+      if (navContainerRef.current && !navContainerRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false);
+      }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, []);
 
   const handleCountryChange = (code) => {
@@ -57,10 +66,13 @@ export default function Navbar({ currency, onCurrencyChange }) {
   };
 
   return (
-    <nav className="navbar">
+    <nav
+      className={`navbar ${isMobileMenuOpen ? "mobile-open" : ""}`}
+      ref={navContainerRef}
+    >
       {/* 1. Logo Section */}
       <div className="navbar-logo">
-        <Link to="/">
+        <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
           <img src="/aada-logo.png" alt="Aada Logo" className="logo-img" />
         </Link>
       </div>
@@ -72,7 +84,10 @@ export default function Navbar({ currency, onCurrencyChange }) {
             <a
               href={item.id}
               className={`nav-item ${activeLink === item.name ? "active" : ""}`}
-              onClick={() => setActiveLink(item.name)}
+              onClick={() => {
+                setActiveLink(item.name);
+                setIsMobileMenuOpen(false);
+              }}
             >
               {item.name}
             </a>
@@ -80,7 +95,7 @@ export default function Navbar({ currency, onCurrencyChange }) {
         ))}
       </ul>
 
-      {/* 3. Country Selector Dropdown */}
+      {/* 3. Actions (Country Selector + Mobile Hamburger Toggle) */}
       <div className="navbar-actions" ref={dropdownRef}>
         <div className="country-dropdown">
           <div
@@ -113,6 +128,17 @@ export default function Navbar({ currency, onCurrencyChange }) {
             </div>
           )}
         </div>
+
+        {/* Mobile Hamburger Toggle Button */}
+        <button
+          type="button"
+          className={`nav-toggle ${isMobileMenuOpen ? "open" : ""}`}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMobileMenuOpen}
+        >
+          <span />
+        </button>
       </div>
     </nav>
   );
