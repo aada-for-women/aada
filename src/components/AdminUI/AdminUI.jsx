@@ -780,7 +780,7 @@ export default function AdminUI() {
       <header className="admin-navbar">
         <div className="admin-brand">
           <img
-            src="/aada-leaf.png"
+            src={`${process.env.PUBLIC_URL}/aada-leaf.png`}
             alt="AADA"
             className="brand-leaf-icon"
             onError={(e) => {

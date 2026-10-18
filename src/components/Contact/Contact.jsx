@@ -79,7 +79,7 @@ export default function Contact() {
 
       <div className="contact-visual">
         <div className="contact-photo-card">
-          <img src="/contact.png" alt="Customer on the phone" />
+          <img src={`${process.env.PUBLIC_URL}/contact.png`} alt="Customer on the phone" />
         </div>
       </div>
     </section>

@@ -50,7 +50,7 @@ export default function App() {
   }, [currency]);
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route
           path="/"

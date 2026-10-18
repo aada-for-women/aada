@@ -73,7 +73,7 @@ export default function Navbar({ currency, onCurrencyChange }) {
       {/* 1. Logo Section */}
       <div className="navbar-logo">
         <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
-          <img src="/aada-logo.png" alt="Aada Logo" className="logo-img" />
+          <img src={`${process.env.PUBLIC_URL}/aada-logo.png`} alt="Aada Logo" className="logo-img" />
         </Link>
       </div>
 

@@ -7,7 +7,7 @@ export default function Home() {
                 <h1 className="home-title">
                     EMBRACE YOUR<br /> STORY WITH <br /> AADA{' '}
                     <img
-                        src="/aada-leaf.png"
+                        src={`${process.env.PUBLIC_URL}/aada-leaf.png`}
                         alt="Aada Leaf Motif"
                         className="aada-leaf-img"
                     />
@@ -19,7 +19,7 @@ export default function Home() {
             </div>
 
             <div className="home-image-section">
-                <img src="/women-model.png" alt="Women Model" className="home-hero-image" />
+                <img src={`${process.env.PUBLIC_URL}/women-model.png`} alt="Women Model" className="home-hero-image" />
             </div>
 
         </div>
